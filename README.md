@@ -31,14 +31,9 @@ jobs:
     publish-test:
         runs-on: ubuntu-18.04
         steps:
-            # To use this repository's private action,
-            # you must check out the repository
-            - name: Checkout
-              uses: actions/checkout@v2
             - name: Parse comment
-              uses: 
+              uses: actions/carrot-publish-github-action@v0.1.0-alpha
               with:
-                comment-body: ${{ github.event.comment.body }}
                 software-name: carrot
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 topic-name: ${{ secrets.CARROT_TOPIC_NAME }}
