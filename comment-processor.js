@@ -14,7 +14,6 @@ const pubsubClient = require('./pubsub-client');
  * to start a carrot test.
  */
 async function processComment() {
-    console.log("Payload", github.context.payload);
     // Get pull request info
     const pr = github.context.payload["issue"]["pull_request"];
     // If pr doesn't have a value, this isn't a pull request comment, so we'll return
@@ -23,7 +22,7 @@ async function processComment() {
         return;
     }
     // Get comment body
-    const commentBody = github.context.payload["event"]["comment"]["body"];
+    const commentBody = github.context.payload["comment"]["body"];
     // Parse the comment body to get the parameters
     const params = parser.parseComment(commentBody);
     // If params doesn't have a value, the comment is not formatted as a CARROT comment, so return
