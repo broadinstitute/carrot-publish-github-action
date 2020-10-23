@@ -1,5 +1,5 @@
 name: 'Broad CARROT GitHub Test Action'
-description: 'Action for triggering runs of tests defined in the Broad's CARROT Application with PR Comments'
+description: 'Action for triggering runs of tests defined in the Broad CARROT Application with PR Comments'
 inputs:
     software-name:
         description: 'The name of the software in this repository, as it is written in the 
