@@ -1,7 +1,7 @@
 # CARROT publish comment action
 
 This action is meant to be used to publish a message to a Google Cloud PubSub topic to be picked 
-up by a CARROT server and processed to run a test.
+up by a [CARROT](https://github.com/broadinstitute/carrot) server and processed to run a test.
 
 ## Running
 
