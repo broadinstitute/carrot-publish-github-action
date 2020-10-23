@@ -32,7 +32,7 @@ jobs:
         runs-on: ubuntu-18.04
         steps:
             - name: Parse comment
-              uses: broadinstitute/carrot-publish-github-action@v0.1.1-alpha
+              uses: broadinstitute/carrot-publish-github-action@v0.3.0-beta
               with:
                 software-name: carrot
                 github-token: ${{ secrets.GITHUB_TOKEN }}
