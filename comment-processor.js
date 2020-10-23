@@ -23,7 +23,7 @@ async function processComment() {
         return;
     }
     // Get comment body
-    const commentBody = github.context.payload["event"]["comment"]["body"];
+    const commentBody = github.context.payload["comment"]["body"];
     // Parse the comment body to get the parameters
     const params = parser.parseComment(commentBody);
     // If params doesn't have a value, the comment is not formatted as a CARROT comment, so return
