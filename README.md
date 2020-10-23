@@ -39,3 +39,11 @@ jobs:
                 topic-name: ${{ secrets.CARROT_TOPIC_NAME }}
                 sa-key: ${{ secrets.CARROT_SA_KEY }}
 ```
+
+## Packaging
+
+Runs from the `dist/index.js` entrypoint.  The action must be packaged before a release so it can be used.
+```
+npm run prepare
+git add dist
+```
