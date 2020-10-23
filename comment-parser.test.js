@@ -1,9 +1,9 @@
 const parser = require('./comment-parser');
 
 test('parse comment with both keys', () => {
-    const parsed = parser.parseComment('#carrot(test_name, test_key, eval_key)');
+    const parsed = parser.parseComment('#carrot(test name, test_key, eval_key)');
     expect(parsed).toStrictEqual({
-        testName: "test_name",
+        testName: "test name",
         testInputKey: "test_key",
         evalInputKey: "eval_key"
     });

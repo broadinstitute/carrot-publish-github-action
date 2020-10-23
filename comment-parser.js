@@ -7,7 +7,7 @@
  */
 function parseComment(commentBody) {
     // Check if comment body matches the format for a carrot test command
-    const re = /^#carrot\([^,\s]+,\s*[^,\s]*,\s*[^,\s]*\)$/;
+    const re = /^#carrot\([^,]+,\s*[^,]*,\s*[^,]*\)$/;
     let workingCommentBody = commentBody.trim();
     // If it matches, extract the parameters
     if(re.test(workingCommentBody)) {
