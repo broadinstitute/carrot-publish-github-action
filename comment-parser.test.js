@@ -1,11 +1,11 @@
 const parser = require('./comment-parser');
 
 test('parse comment with both keys', () => {
-    const parsed = parser.parseComment('#carrot(test name, test_key, eval_key)');
+    const parsed = parser.parseComment('#carrot(Github actions test, in_test_image, in_eval_image)');
     expect(parsed).toStrictEqual({
-        testName: "test name",
-        testInputKey: "test_key",
-        evalInputKey: "eval_key"
+        testName: "Github actions test",
+        testInputKey: "in_test_image",
+        evalInputKey: "in_eval_image"
     });
 });
 
