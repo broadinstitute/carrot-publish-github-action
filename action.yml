@@ -1,21 +1,5 @@
-name: 'Parse Comment for Carrot Command'
-description: 'Parses a comment to see if it matches the Carrot command format:
-
-    #carrot({test_name}, {test_input_key}, {eval_input_key})
-
-    where {test_name} is the unique name of the test, 
-
-    {test_input_key} is the input in the test wdl to which the generated docker image should be 
-    supplied (can be left blank), and
-    
-    {eval_input_key} is the input in the eval wdl to which the generated docker image should be 
-    supplied (can be left blank)
-    
-    Ex. #carrot(my_cool_test, in_gatk_docker, in_gatk_docker2)
-    
-    Ex. #carrot(my_cool_test, , in_gatk_docker2)
-    
-    Ex. #carrot(my_cool_test, in_gatk_docker, )'
+name: 'Broad CARROT GitHub Test Action'
+description: 'Action for triggering runs of tests defined in the Broad's CARROT Application with PR Comments'
 inputs:
     software-name:
         description: 'The name of the software in this repository, as it is written in the 
