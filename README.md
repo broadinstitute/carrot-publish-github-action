@@ -40,6 +40,8 @@ jobs:
                 sa-key: ${{ secrets.CARROT_SA_KEY }}
 ```
 
+The value for `software-name` should match the name used in the software record in CARROT that you created to represent your repository.
+
 `CARROT_TOPIC_NAME` should be defined as a secret in your repository as the name of the Google Cloud PubSub topic that run messages will be published to.
 
 `CARROT_SA_KEY` should be defined as a secret in your repository as a service account key json for the Google Service Account that has access to publish to the topic specified by `CARROT_TOPIC_NAME`.
