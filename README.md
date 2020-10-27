@@ -40,6 +40,12 @@ jobs:
                 sa-key: ${{ secrets.CARROT_SA_KEY }}
 ```
 
+`CARROT_TOPIC_NAME` should be defined as a secret in your repository as the name of the Google Cloud PubSub topic that run messages will be published to.
+
+`CARROT_SA_KEY` should be defined as a secret in your repository as a service account key json for the Google Service Account that has access to publish to the topic specified by `CARROT_TOPIC_NAME`.
+
+`GITHUB_TOKEN` will be generated automatically for communicating with the GitHub API, and does not need to be manually set.
+
 ## Packaging
 
 Runs from the `dist/index.js` entrypoint.  The action must be packaged before a release so it can be used.
