@@ -38,6 +38,7 @@ jobs:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 topic-name: ${{ secrets.CARROT_TOPIC_NAME }}
                 sa-key: ${{ secrets.CARROT_SA_KEY }}
+                minimum-permissions: read
 ```
 
 The value for `software-name` should match the name used in the software record in CARROT that you created to represent your repository.
