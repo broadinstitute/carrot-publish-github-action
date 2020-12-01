@@ -16,6 +16,11 @@ inputs:
     sa-key:
         description: 'The Service Account key JSON for the service account that has publish 
             permissions for the PubSub topic'
+    minimum-permissions:
+        description: 'The minimum permissions level required of a user to be able to trigger a 
+            CARROT test run from a comment.  Can be "admin", "write", "read", or "none" 
+            (not recommended)'
+        default: 'read'
 runs:
     using: 'node12'
     main: 'dist/index.js'

@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const parser = require('./comment-parser');
 const githubClient = require('./github-client');
+const permissionsChecker = require('./permissions-checker');
 const pubsubClient = require('./pubsub-client');
 
 /**
@@ -38,6 +39,11 @@ async function processComment() {
     const ownerAndRepo = github.context.payload["repository"]["full_name"].split("/");
     const issueNumber = github.context.payload["issue"]["number"];
     const author = github.context.payload["comment"]["user"]["login"];
+    // Finally, check to make sure the user has permission to trigger a test run
+    if(!permissionsChecker.userHasPermission(ownerAndRepo[0], ownerAndRepo[1], author)){
+        console.log("User does not have the necessary permissions to run a test");
+        return;
+    }
     // Build the message
     const message = {
         "source": "github",
