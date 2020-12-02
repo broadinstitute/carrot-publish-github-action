@@ -10,8 +10,7 @@ async function userHasPermission(owner, repo, username) {
     const permissionHierarchy = {
         'admin': 3,
         'write': 2,
-        'read': 1,
-        'none': 0
+        'read': 1
     };
     // Get the minimum permissions from the action inputs
     const minimumPermissions = core.getInput("minimum-permissions");

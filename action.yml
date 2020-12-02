@@ -18,9 +18,9 @@ inputs:
             permissions for the PubSub topic'
     minimum-permissions:
         description: 'The minimum permissions level required of a user to be able to trigger a 
-            CARROT test run from a comment.  Can be "admin", "write", "read", or "none" 
+            CARROT test run from a comment.  Can be "admin", "write", or "read" 
             (not recommended)'
-        default: 'read'
+        default: 'write'
 runs:
     using: 'node12'
     main: 'dist/index.js'
