@@ -37,6 +37,7 @@ async function getUserPermissionLevel(owner, repo, username) {
     }
     // Get and return user permission level
     const { data: permission } = await octokit.repos.getCollaboratorPermissionLevel({owner, repo, username});
+    console.log("Permission: " + permission);
     return permission;
 }
 /*

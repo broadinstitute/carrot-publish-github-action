@@ -22,6 +22,7 @@ async function userHasPermission(owner, repo, username) {
     }
     // Get the permissions of the user
     const permissions = client.getUserPermissionLevel(owner, repo, username)["permission"];
+    console.log("User: " + permissions + ", minimum: " + minimumPermissions);
     // If user permissions are less than minimum, return false
     if(permissionHierarchy[permissions] < permissionHierarchy[minimumPermissions]) {
         console.log("Minimum permissions are " + minimumPermissions + " but user permissions are " + permissions);
