@@ -21,7 +21,12 @@ async function userHasPermission(owner, repo, username) {
         return false;
     }
     // Get the permissions of the user
-    const permissions = client.getUserPermissionLevel(owner, repo, username)["permission"];
+    const permissions = (await client.getUserPermissionLevel(owner, repo, username))["permission"];
+    // If user permissions are not recognized, return false because that shouldn't happen
+    if(!permissionHierarchy.hasOwnProperty(permissions)) {
+        console.log("Failed to retrieve user permissions or retrieve permission was not recognized. (Value: " + permissions + ")");
+        return false;
+    }
     // If user permissions are less than minimum, return false
     if(permissionHierarchy[permissions] < permissionHierarchy[minimumPermissions]) {
         console.log("Minimum permissions are " + minimumPermissions + " but user permissions are " + permissions);

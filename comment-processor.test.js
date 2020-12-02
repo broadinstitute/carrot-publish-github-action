@@ -3,11 +3,13 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const githubClient = require('./github-client');
 const pubsubClient = require('./pubsub-client');
+const permissionsChecker = require('./permissions-checker');
 
 jest.mock('@actions/core');
 jest.mock('@actions/github');
 jest.mock('./github-client');
 jest.mock('./pubsub-client');
+jest.mock('./permissions-checker');
 
 test('process comment success', async () => {
     github.context = {
@@ -55,6 +57,8 @@ test('process comment success', async () => {
         expect(message).toBe(JSON.stringify(expectedMessage));
         return 123456
     });
+
+    permissionsChecker.userHasPermission.mockImplementation(async () => true);
 
     console.log = jest.fn();
 
