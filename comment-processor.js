@@ -40,7 +40,7 @@ async function processComment() {
     const issueNumber = github.context.payload["issue"]["number"];
     const author = github.context.payload["comment"]["user"]["login"];
     // Finally, check to make sure the user has permission to trigger a test run
-    if(!permissionsChecker.userHasPermission(ownerAndRepo[0], ownerAndRepo[1], author)){
+    if(!(await permissionsChecker.userHasPermission(ownerAndRepo[0], ownerAndRepo[1], author))){
         console.log("User does not have the necessary permissions to run a test");
         return;
     }
