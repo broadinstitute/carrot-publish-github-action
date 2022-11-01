@@ -1,18 +1,26 @@
 /**
  * Parses comment into test name and keys
  * 
- * Parses the comment provided in commentBody and returns an object containing testName,
+ * Parses the comment provided in commentBody and returns an object containing runType, testName,
  * testInputKey, and evalInputKey if successful, or undefined if the comment is not in the correct
  * format for a CARROT comment.
  */
 function parseComment(commentBody) {
-    // Check if comment body matches the format for a carrot test command
-    const re = /^#carrot\([^,]+,\s*[^,]*,\s*[^,]*\)$/;
+    // Check if comment body matches the format for a carrot run or pr run command
+    const re = /^#carrot(?:_pr)?\([^,]+,\s*[^,]*,\s*[^,]*\)$/;
     let workingCommentBody = commentBody.trim();
     // If it matches, extract the parameters
     if(re.test(workingCommentBody)) {
+        // Get the type of command invoked
+        let runType = "run"
+        if(workingCommentBody.substring(7, 10) === "_pr") {
+            runType = "pr"
+            workingCommentBody = workingCommentBody.substring(11, workingCommentBody.length-1);
+        }
+        else {
+            workingCommentBody = workingCommentBody.substring(8, workingCommentBody.length-1);
+        }
         // Extract params
-        workingCommentBody = workingCommentBody.substring(8, workingCommentBody.length-1);
         const params = workingCommentBody.split(",");
         // Pull out the specific params
         const testName = params[0].trim();
@@ -25,6 +33,7 @@ function parseComment(commentBody) {
         }
         // If we made it this far, return the parsed params object
         return {
+            runType,
             testName,
             testInputKey,
             evalInputKey

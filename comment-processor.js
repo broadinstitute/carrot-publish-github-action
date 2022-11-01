@@ -10,9 +10,11 @@ const pubsubClient = require('./pubsub-client');
  * info to start a test, if the comment is a carrot test comment.
  * 
  * Checks if the comment that triggered this action is a PR comment that matches the format of a
- * carrot test comment (#carrot({test_name}, {test_input_key}, {eval_input_key})).  If it does,
- * parses the comment and the PR context to send a message to the configured google pubsub topic
- * to start a carrot test.
+ * carrot test comment:
+ * #carrot({test_name}, {test_input_key}, {eval_input_key}) or
+ * #carrot_pr({test_name}, {test_input_key}, {eval_input_key})
+ * If it does, parses the comment and the PR context to send a message to the configured google
+ * pubsub topic to start a carrot test.
  */
 async function processComment() {
     // Get pull request info
@@ -33,8 +35,9 @@ async function processComment() {
     }
     // Get the other info we need about the PR via the GitHub API
     const prInfo = await githubClient.getPRInfo(pr["url"]);
-    // Extract the commit hash
+    // Extract the commit hashes
     const commitHash = prInfo["head"]["sha"];
+    const baseCommit = prInfo["base"]["sha"];
     // While we're here, get the last bit of metadata we need
     const ownerAndRepo = github.context.payload["repository"]["full_name"].split("/");
     const issueNumber = github.context.payload["issue"]["number"];
@@ -45,18 +48,36 @@ async function processComment() {
         return;
     }
     // Build the message
-    const message = {
-        "source": "github",
-        "test_name": params["testName"],
-        "test_input_key": params["testInputKey"],
-        "eval_input_key": params["evalInputKey"],
-        "software_name": core.getInput('software-name'),
-        "commit": commitHash,
-        "owner": ownerAndRepo[0],
-        "repo": ownerAndRepo[1],
-        "issue_number": issueNumber,
-        "author": author
-    };
+    let message = {"request_type": params["runType"]}
+    if(params["runType"] === "pr") {
+        message["body"] = {
+            "source": "github",
+            "test_name": params["testName"],
+            "test_input_key": params["testInputKey"],
+            "eval_input_key": params["evalInputKey"],
+            "software_name": core.getInput('software-name'),
+            "head_commit": commitHash,
+            "base_commit": baseCommit,
+            "owner": ownerAndRepo[0],
+            "repo": ownerAndRepo[1],
+            "issue_number": issueNumber,
+            "author": author
+        };
+    }
+    else {
+        message["body"] = {
+            "source": "github",
+            "test_name": params["testName"],
+            "test_input_key": params["testInputKey"],
+            "eval_input_key": params["evalInputKey"],
+            "software_name": core.getInput('software-name'),
+            "commit": commitHash,
+            "owner": ownerAndRepo[0],
+            "repo": ownerAndRepo[1],
+            "issue_number": issueNumber,
+            "author": author,
+        };
+    }
     // Send the message
     const messageId = await pubsubClient.publishMessage(JSON.stringify(message)).catch(core.setFailed);
 
