@@ -29,7 +29,7 @@ on:
         types: [created]
 jobs:
     publish-test:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         steps:
             - name: Parse comment
               uses: broadinstitute/carrot-publish-github-action@v0.3.0-beta
