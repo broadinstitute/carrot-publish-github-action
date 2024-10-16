@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const fs = require('fs');
-const PubSub = require('@google-cloud/pubsub');
+const {PubSub} = require('@google-cloud/pubsub');
 
 /**
  *  Sends the message string to the pubsub topic.
