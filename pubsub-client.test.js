@@ -4,9 +4,7 @@ const fs = require('fs');
 const {PubSub} = require('@google-cloud/pubsub');
 
 jest.mock('@actions/core');
-jest.mock('@google-cloud/pubsub', ()=> {
-    return jest.fn();
-});
+jest.mock('@google-cloud/pubsub');
 
 test('publish message', async () => {
     let message = '{"test":"test"}';
