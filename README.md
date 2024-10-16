@@ -29,7 +29,7 @@ on:
         types: [created]
 jobs:
     publish-test:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-20.04
         steps:
             - name: Parse comment
               uses: broadinstitute/carrot-publish-github-action@v0.3.0-beta
@@ -38,7 +38,7 @@ jobs:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 topic-name: ${{ secrets.CARROT_TOPIC_NAME }}
                 sa-key: ${{ secrets.CARROT_SA_KEY }}
-                minimum-permissions: read
+                minimum-permissions: write
 ```
 
 The value for `software-name` should match the name used in the software record in CARROT that you created to represent your repository.

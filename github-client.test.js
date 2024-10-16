@@ -21,13 +21,15 @@ test('get pr info no octokit', async () => {
 test('get pr info', async () => {
     core.getInput.mockImplementation(() => "aaaaaaaaaaaaaaaaaa");
     const mocktokit = {
-        pulls : {
-            get : async (params) => {
-                expect(params.owner).toBe("test_account");
-                expect(params.repo).toBe("test_repo");
-                expect(params.pull_number).toBe("3");
-                return {
-                    data: "test"
+        rest: {
+            pulls : {
+                get : async (params) => {
+                    expect(params.owner).toBe("test_account");
+                    expect(params.repo).toBe("test_repo");
+                    expect(params.pull_number).toBe("3");
+                    return {
+                        data: "test"
+                    }
                 }
             }
         }
@@ -49,14 +51,16 @@ test('get user permission level no octokit', async () => {
 test('get user permission level', async () => {
     core.getInput.mockImplementation(() => "aaaaaaaaaaaaaaaaaa");
     const mocktokit = {
-        repos : {
-            getCollaboratorPermissionLevel : async (params) => {
-                expect(params.owner).toBe("test_owner");
-                expect(params.repo).toBe("test_repo");
-                expect(params.username).toBe("test_user");
-                return {
-                    data: {
-                        permission: "read"
+        rest: {
+            repos : {
+                getCollaboratorPermissionLevel : async (params) => {
+                    expect(params.owner).toBe("test_owner");
+                    expect(params.repo).toBe("test_repo");
+                    expect(params.username).toBe("test_user");
+                    return {
+                        data: {
+                            permission: "read"
+                        }
                     }
                 }
             }

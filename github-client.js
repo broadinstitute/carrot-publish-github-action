@@ -15,7 +15,7 @@ async function getPRInfo(prUrl) {
         return;
     }
     // Get the PR info
-    const { data: pullRequest } = await octokit.pulls.get({
+    const { data: pullRequest } = await octokit.rest.pulls.get({
         owner,
         repo,
         pull_number: pullNumber
@@ -36,7 +36,7 @@ async function getUserPermissionLevel(owner, repo, username) {
         return;
     }
     // Get and return user permission level
-    const { data: permission } = await octokit.repos.getCollaboratorPermissionLevel({owner, repo, username});
+    const { data: permission } = await octokit.rest.repos.getCollaboratorPermissionLevel({owner, repo, username});
     return permission;
 }
 /*
