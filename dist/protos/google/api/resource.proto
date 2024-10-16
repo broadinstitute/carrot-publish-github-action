@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2018 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,11 +57,7 @@ extend google.protobuf.MessageOptions {
 //       // For Kubernetes resources, the format is {api group}/{kind}.
 //       option (google.api.resource) = {
 //         type: "pubsub.googleapis.com/Topic"
-//         name_descriptor: {
-//           pattern: "projects/{project}/topics/{topic}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//           parent_name_extractor: "projects/{project}"
-//         }
+//         pattern: "projects/{project}/topics/{topic}"
 //       };
 //     }
 //
@@ -69,10 +65,7 @@ extend google.protobuf.MessageOptions {
 //
 //     resources:
 //     - type: "pubsub.googleapis.com/Topic"
-//       name_descriptor:
-//         - pattern: "projects/{project}/topics/{topic}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//           parent_name_extractor: "projects/{project}"
+//       pattern: "projects/{project}/topics/{topic}"
 //
 // Sometimes, resources have multiple patterns, typically because they can
 // live under multiple parents.
@@ -82,26 +75,10 @@ extend google.protobuf.MessageOptions {
 //     message LogEntry {
 //       option (google.api.resource) = {
 //         type: "logging.googleapis.com/LogEntry"
-//         name_descriptor: {
-//           pattern: "projects/{project}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//           parent_name_extractor: "projects/{project}"
-//         }
-//         name_descriptor: {
-//           pattern: "folders/{folder}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-//           parent_name_extractor: "folders/{folder}"
-//         }
-//         name_descriptor: {
-//           pattern: "organizations/{organization}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Organization"
-//           parent_name_extractor: "organizations/{organization}"
-//         }
-//         name_descriptor: {
-//           pattern: "billingAccounts/{billing_account}/logs/{log}"
-//           parent_type: "billing.googleapis.com/BillingAccount"
-//           parent_name_extractor: "billingAccounts/{billing_account}"
-//         }
+//         pattern: "projects/{project}/logs/{log}"
+//         pattern: "folders/{folder}/logs/{log}"
+//         pattern: "organizations/{organization}/logs/{log}"
+//         pattern: "billingAccounts/{billing_account}/logs/{log}"
 //       };
 //     }
 //
@@ -109,48 +86,10 @@ extend google.protobuf.MessageOptions {
 //
 //     resources:
 //     - type: 'logging.googleapis.com/LogEntry'
-//       name_descriptor:
-//         - pattern: "projects/{project}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//           parent_name_extractor: "projects/{project}"
-//         - pattern: "folders/{folder}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-//           parent_name_extractor: "folders/{folder}"
-//         - pattern: "organizations/{organization}/logs/{log}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Organization"
-//           parent_name_extractor: "organizations/{organization}"
-//         - pattern: "billingAccounts/{billing_account}/logs/{log}"
-//           parent_type: "billing.googleapis.com/BillingAccount"
-//           parent_name_extractor: "billingAccounts/{billing_account}"
-//
-// For flexible resources, the resource name doesn't contain parent names, but
-// the resource itself has parents for policy evaluation.
-//
-// Example:
-//
-//     message Shelf {
-//       option (google.api.resource) = {
-//         type: "library.googleapis.com/Shelf"
-//         name_descriptor: {
-//           pattern: "shelves/{shelf}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//         }
-//         name_descriptor: {
-//           pattern: "shelves/{shelf}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Folder"
-//         }
-//       };
-//     }
-//
-// The ResourceDescriptor Yaml config will look like:
-//
-//     resources:
-//     - type: 'library.googleapis.com/Shelf'
-//       name_descriptor:
-//         - pattern: "shelves/{shelf}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Project"
-//         - pattern: "shelves/{shelf}"
-//           parent_type: "cloudresourcemanager.googleapis.com/Folder"
+//       pattern: "projects/{project}/logs/{log}"
+//       pattern: "folders/{folder}/logs/{log}"
+//       pattern: "organizations/{organization}/logs/{log}"
+//       pattern: "billingAccounts/{billing_account}/logs/{log}"
 message ResourceDescriptor {
   // A description of the historical or future-looking state of the
   // resource pattern.
@@ -166,6 +105,22 @@ message ResourceDescriptor {
     // later. (This is the inverse of ORIGINALLY_SINGLE_PATTERN, and prevents
     // that from being necessary once there are multiple patterns.)
     FUTURE_MULTI_PATTERN = 2;
+  }
+
+  // A flag representing a specific style that a resource claims to conform to.
+  enum Style {
+    // The unspecified value. Do not use.
+    STYLE_UNSPECIFIED = 0;
+
+    // This resource is intended to be "declarative-friendly".
+    //
+    // Declarative-friendly resources must be more strictly consistent, and
+    // setting this to true communicates to tools that this resource should
+    // adhere to declarative-friendly expectations.
+    //
+    // Note: This is used by the API linter (linter.aip.dev) to enable
+    // additional checks.
+    DECLARATIVE_FRIENDLY = 1;
   }
 
   // The resource type. It must be in the format of
@@ -236,6 +191,11 @@ message ResourceDescriptor {
   // https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
   // Such as "project" for the `resourcemanager.googleapis.com/Project` type.
   string singular = 6;
+
+  // Style flag(s) for this resource.
+  // These indicate that a resource is expected to conform to a given
+  // style. See the specific style flags for additional information.
+  repeated Style style = 10;
 }
 
 // Defines a proto annotation that describes a string field that refers to
