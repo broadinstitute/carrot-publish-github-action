@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2023 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ option objc_class_prefix = "GAPI";
 // Available context types are defined in package
 // `google.rpc.context`.
 //
-// This also provides mechanism to whitelist any protobuf message extension that
+// This also provides mechanism to allowlist any protobuf message extension that
 // can be sent in grpc metadata using “x-goog-ext-<extension_id>-bin” and
 // “x-goog-ext-<extension_id>-jspb” format. For example, list any service
 // specific protobuf types that can appear in grpc metadata as follows in your
@@ -70,7 +70,8 @@ message Context {
 message ContextRule {
   // Selects the methods to which this rule applies.
   //
-  // Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+  // Refer to [selector][google.api.DocumentationRule.selector] for syntax
+  // details.
   string selector = 1;
 
   // A list of full type names of requested contexts.

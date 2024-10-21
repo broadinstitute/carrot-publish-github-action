@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +23,14 @@ import "google/api/servicecontrol/v1/operation.proto";
 import "google/rpc/status.proto";
 
 option cc_enable_arenas = true;
-option go_package = "google.golang.org/genproto/googleapis/api/servicecontrol/v1;servicecontrol";
+option csharp_namespace = "Google.Cloud.ServiceControl.V1";
+option go_package = "cloud.google.com/go/servicecontrol/apiv1/servicecontrolpb;servicecontrolpb";
 option java_multiple_files = true;
 option java_outer_classname = "ServiceControllerProto";
 option java_package = "com.google.api.servicecontrol.v1";
 option objc_class_prefix = "GASC";
+option php_namespace = "Google\\Cloud\\ServiceControl\\V1";
+option ruby_package = "Google::Cloud::ServiceControl::V1";
 
 // [Google Service Control API](/service-control/overview)
 //
@@ -50,8 +53,8 @@ service ServiceController {
   // propagation, therefore callers MUST NOT depend on the `Check` method having
   // the latest policy information.
   //
-  // NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has the
-  // size limit of 64KB.
+  // NOTE: the [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has
+  // the size limit (wire-format byte size) of 1MB.
   //
   // This method requires the `servicemanagement.services.check` permission
   // on the specified service. For more information, see
@@ -111,8 +114,18 @@ message CheckRequest {
 message CheckResponse {
   // Contains additional information about the check operation.
   message CheckInfo {
+    // A list of fields and label keys that are ignored by the server.
+    // The client doesn't need to send them for following requests to improve
+    // performance and allow better aggregation.
+    repeated string unused_arguments = 1;
+
     // Consumer info of this check.
     ConsumerInfo consumer_info = 2;
+
+    // The unique id of the api key in the format of "apikey:<UID>".
+    // This field will be populated when the consumer passed to Service Control
+    // is an API key and all the API key related validations are successful.
+    string api_key_uid = 5;
   }
 
   // `ConsumerInfo` provides information about the consumer.
@@ -141,8 +154,8 @@ message CheckResponse {
     // The Google cloud project number, e.g. 1234567890. A value of 0 indicates
     // no project number is found.
     //
-    // NOTE: This field is deprecated after Service Control support flexible
-    // consumer id. New code should not depend on this field anymore.
+    // NOTE: This field is deprecated after we support flexible consumer
+    // id. New code should not depend on this field anymore.
     int64 project_number = 1;
 
     // The type of the consumer which should have been defined in
